@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LVBICE Membership</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Success Notification -->
+    <div id="successNotification" class="success-notification">
+        <div class="success-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" 
+                      stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="success-content">
+            <strong>Registration Successful!</strong>
+            <div class="success-subtitle">You are now an LVBICE member</div>
+        </div>
+        <div class="progress-line"></div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div id="donationModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeDonationModal" class="close-modal-btn">×</button>
+            
+            <div class="modal-body">
+                <h2 class="modal-title">Make a Donation</h2>
+                <p class="modal-subtitle">
+                    Support LVBICE through CHACODEV
+                </p>
+                
+                <div class="form-container">
+                    <h4 class="form-section-title">Donation Details</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Donation Amount ($) <span class="required-star">*</span></label>
+                        <input type="number" id="donationAmount" class="form-input" min="1" placeholder="Enter amount" required>
+                        <div class="error-message" id="donationAmountError">Please enter a donation amount</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Method <span class="required-star">*</span></label>
+                        <select id="paymentMethod" class="form-select" required>
+                            <option value="">Select payment method</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="mpesa">M-Pesa</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="paypal">PayPal</option>
+                        </select>
+                        <div class="error-message" id="paymentMethodError">Please select a payment method</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p>All contributions go through <strong>CHACODEV</strong> (PBO registered in Kenya)</p>
+                    </div>
+                    
+                    <button id="submitDonation" class="primary-btn full-width">
+                        PROCESS DONATION
+                    </button>
+                </div>
+                
+                <!-- Clickable text for success notification -->
+                <div class="skip-donation">
+                    <p>Skip donation for now?</p>
+                    <a id="skipDonation" class="text-link">
+                        Complete registration without donation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Membership Modal -->
+    <div id="membershipModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeModal" class="close-modal-btn">×</button>
+            
+            <!-- Screen 1: Selection -->
+            <div id="selectionScreen" class="modal-screen active">
+                <div class="screen-content">
+                    <h2 class="modal-title">Join LVBICE Network</h2>
+                    <p class="modal-subtitle">
+                        More than 10,000 professionals here<br>
+                        Harness technology and innovations
+                    </p>
+                    
+                    <div class="selection-buttons">
+                        <button id="individualOption" class="primary-btn full-width selection-btn">
+                            Join as an Individual Member
+                        </button>
+                        
+                        <button id="organizationOption" class="secondary-btn full-width selection-btn">
+                            Join as a Member Organisation
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 2: Individual Form -->
+            <div id="individualForm" class="modal-screen">
+                <div class="screen-content">
+                    <h2 class="modal-title">Individual Membership</h2>
+                    
+                    <form id="registrationForm">
+                        <!-- Personal Information - LEFT ALIGNED -->
+                        <div class="left-aligned-form">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Full Name <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="fullName" class="form-input" required 
+                                       placeholder="Enter your full name"
+                                       pattern="[A-Za-z\s\-']{3,50}"
+                                       title="Full name (3-50 letters only)">
+                                <div class="error-message" id="fullNameError">Please enter your full name</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Email Address <span class="required-star">*</span>
+                                </label>
+                                <input type="email" id="email" class="form-input" required 
+                                       placeholder="your.email@example.com"
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                       title="Valid email address required">
+                                <div class="error-message" id="emailError">Please enter a valid email address</div>
+                            </div>
+                            
+                            <!-- COUNTRY BEFORE PHONE NUMBER -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Country <span class="required-star">*</span>
+                                </label>
+                                <select id="country" class="form-select" required>
+                                    <option value="">Select your country</option>
+                                    <option value="kenya">Kenya</option>
+                                    <option value="tanzania">Tanzania</option>
+                                    <option value="uganda">Uganda</option>
+                                    <option value="rwanda">Rwanda</option>
+                                    <option value="burundi">Burundi</option>
+                                    <option value="ethiopia">Ethiopia</option>
+                                    <option value="south_sudan">South Sudan</option>
+                                    <option value="drc">DR Congo</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="error-message" id="countryError">Please select your country</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Phone Number <span class="required-star">*</span>
+                                </label>
+                                <div class="phone-input-group">
+                                    <div class="country-code-display" id="indCountryCode">+254</div>
+                                    <input type="tel" id="phone" class="form-input" required 
+                                           placeholder="7XX XXX XXX"
+                                           pattern="[0-9]{9}"
+                                           maxlength="9"
+                                           title="9-digit phone number (without country code)">
+                                </div>
+                                <div class="phone-hint">Enter 9 digits without country code</div>
+                                <div class="error-message" id="phoneError">Please enter a valid 9-digit phone number</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms Checkbox -->
+                        <div class="checkbox-container" id="termsContainer">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms" class="checkbox-label">
+                                I agree to the Terms and Conditions
+                            </label>
+                        </div>
+                        <div class="error-message" id="termsError">You must agree to the Terms and Conditions</div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="primary-btn full-width">
+                            COMPLETE REGISTRATION
+                        </button>
+                    </form>
+                    
+                    <!-- Back Button -->
+                    <button id="backToSelection" class="secondary-btn full-width back-btn">
+                        ← Back to Selection
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Screen 3: Organization Type Selection -->
+            <div id="organizationTypeScreen" class="modal-screen">
+                <div class="screen-content">
+                    <h2 class="modal-title">Organization Type</h2>
+                    <p class="modal-subtitle">
+                        Are you joining as a state or non-state organization?
+                    </p>
+                    
+                    <div class="selection-buttons">
+                        <button id="stateOrganization" class="primary-btn full-width selection-btn" data-type="state">
+                            State Organization
+                            <div class="option-subtitle">Government agencies, public institutions</div>
+                        </button>
+                        
+                        <button id="nonStateOrganization" class="primary-btn full-width selection-btn" data-type="non-state">
+                            Non-State Organization
+                            <div class="option-subtitle">PBOs, NGOs, private companies, manufacturers</div>
+                        </button>
+                    </div>
+                    
+                    <!-- Back Button -->
+                    <button id="backToSelectionFromType" class="secondary-btn full-width back-btn">
+                        ← Back to Selection
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Screen 4: Organization Details Form -->
+            <div id="organizationForm" class="modal-screen">
+                <div class="screen-content">
+                    <h2 class="modal-title">Organization Details</h2>
+                    <p class="modal-subtitle" id="orgTypeDescription">
+                        <!-- Will be filled dynamically -->
+                    </p>
+                    
+                    <form id="organizationRegistrationForm">
+                        <!-- Organization Information -->
+                        <div class="left-aligned-form">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Organization Name <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="orgName" class="form-input" required 
+                                       placeholder="Official organization name"
+                                       pattern="[A-Za-z0-9\s\-&.,'()]{2,100}"
+                                       title="Organization name (2-100 characters, letters, numbers, spaces, and basic punctuation)">
+                                <div class="error-message" id="orgNameError">Please enter organization name</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Organization Category <span class="required-star">*</span>
+                                </label>
+                                <select id="orgCategory" class="form-select" required>
+                                    <option value="">Select category</option>
+                                    <option value="government_ministry">Government Ministry</option>
+                                    <option value="county_government">County Government</option>
+                                    <option value="public_university">Public University</option>
+                                    <option value="research_institution">Research Institution</option>
+                                    <option value="regulatory_body">Regulatory Body</option>
+                                    <option value="parastatal">Parastatal</option>
+                                    <option value="public_hospital">Public Hospital</option>
+                                    <option value="other_state">Other State Agency</option>
+                                    <option value="ngo">Non-Governmental Organization (NGO)</option>
+                                    <option value="cbo">Community-Based Organization (CBO)</option>
+                                    <option value="fbo">Faith-Based Organization (FBO)</option>
+                                    <option value="private_company">Private Company</option>
+                                    <option value="manufacturer">Manufacturer</option>
+                                    <option value="consultancy">Consultancy Firm</option>
+                                    <option value="development_partner">Development Partner</option>
+                                    <option value="international_ngo">International NGO</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="error-message" id="orgCategoryError">Please select organization category</div>
+                            </div>
+                            
+                            <!-- Other Organization Name (appears only when "Other" is selected) -->
+                            <div class="form-group" id="otherOrgNameGroup" style="display: none;">
+                                <label class="form-label">
+                                    Specify Organization Type <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="otherOrgName" class="form-input"
+                                       placeholder="Please specify your organization type">
+                                <div class="error-message" id="otherOrgNameError">Please specify organization type</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Person Details -->
+                        <div class="form-section-divider">
+                            <h4 class="form-section-title">Contact Person Details</h4>
+                        </div>
+                        
+                        <div class="left-aligned-form">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Full Name <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="contactName" class="form-input" required 
+                                       placeholder="Full name of primary contact"
+                                       pattern="[A-Za-z\s\-']{3,50}"
+                                       title="Full name (3-50 letters, spaces, hyphens, and apostrophes)">
+                                <div class="error-message" id="contactNameError">Please enter contact person name</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Job Title <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="contactTitle" class="form-input" required 
+                                       placeholder="Position in organization"
+                                       pattern="[A-Za-z\s\-&.,'()]{2,50}"
+                                       title="Job title (2-50 characters)">
+                                <div class="error-message" id="contactTitleError">Please enter job title</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Email Address <span class="required-star">*</span>
+                                </label>
+                                <input type="email" id="contactEmail" class="form-input" required 
+                                       placeholder="contact@organization.com"
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                <div class="error-message" id="contactEmailError">Please enter a valid email address</div>
+                            </div>
+                            
+                            <!-- COUNTRY BEFORE PHONE NUMBER -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Country <span class="required-star">*</span>
+                                </label>
+                                <select id="orgCountry" class="form-select" required>
+                                    <option value="">Select country</option>
+                                    <option value="kenya">Kenya</option>
+                                    <option value="tanzania">Tanzania</option>
+                                    <option value="uganda">Uganda</option>
+                                    <option value="rwanda">Rwanda</option>
+                                    <option value="burundi">Burundi</option>
+                                    <option value="ethiopia">Ethiopia</option>
+                                    <option value="south_sudan">South Sudan</option>
+                                    <option value="drc">DR Congo</option>
+                                    <option value="south_africa">South Africa</option>
+                                    <option value="usa">United States</option>
+                                    <option value="uk">United Kingdom</option>
+                                    <option value="canada">Canada</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="error-message" id="orgCountryError">Please select country</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Phone Number <span class="required-star">*</span>
+                                </label>
+                                <div class="phone-input-group">
+                                    <div class="country-code-display" id="orgCountryCode">+254</div>
+                                    <input type="tel" id="contactPhone" class="form-input" required 
+                                           placeholder="7XX XXX XXX"
+                                           pattern="[0-9]{9}"
+                                           maxlength="9"
+                                           title="9-digit phone number (without country code)">
+                                </div>
+                                <div class="phone-hint">Enter 9 digits without country code</div>
+                                <div class="error-message" id="contactPhoneError">Please enter a valid 9-digit phone number</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms Checkbox -->
+                        <div class="checkbox-container" id="orgTermsContainer">
+                            <input type="checkbox" id="orgTerms" required>
+                            <label for="orgTerms" class="checkbox-label">
+                                Our organization agrees to share knowledge and good practices within the LVBICE network
+                            </label>
+                        </div>
+                        <div class="error-message" id="orgTermsError">You must agree to the terms</div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="primary-btn full-width">
+                            SUBMIT ORGANIZATION APPLICATION
+                        </button>
+                    </form>
+                    
+                    <!-- Back Button -->
+                    <button id="backToTypeSelection" class="secondary-btn full-width back-btn">
+                        ← Back to Organization Type
+                    </button>
+                    
+                    <!-- Help Text -->
+                    <div class="help-box">
+                        <p>Need assistance? Contact: <strong>customerservice@lvbice.com</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your existing website content goes here -->
+    <div class="website-content">
+        <h1>The Existing Website</h1>
+        <p>Existing website contents</p>
+        
+        <!-- THE BECOME A MEMBER BUTTON -->
+        <button id="becomeMemberBtn" class="primary-btn">
+            Become a Member
+        </button>
+    </div>
+
+    <!-- Load JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
