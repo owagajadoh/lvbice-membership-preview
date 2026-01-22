@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Success Notification -->
-    <div id="successNotification" class="success-notification">
-        <div class="success-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" 
-                      stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+    <!-- Professional Notification System -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" 
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="notification-text">
+                <div class="notification-title"></div>
+                <div class="notification-message"></div>
+            </div>
+            <button class="notification-close">×</button>
         </div>
-        <div class="success-content">
-            <strong>Registration Successful!</strong>
-            <div class="success-subtitle">You are now an LVBICE member</div>
-        </div>
-        <div class="progress-line"></div>
     </div>
 
     <!-- Donation Modal -->
@@ -46,12 +48,51 @@
                         <label class="form-label">Payment Method <span class="required-star">*</span></label>
                         <select id="paymentMethod" class="form-select" required>
                             <option value="">Select payment method</option>
-                            <option value="credit_card">Credit Card</option>
                             <option value="mpesa">M-Pesa</option>
+                            <option value="credit_card">Credit Card</option>
                             <option value="bank_transfer">Bank Transfer</option>
                             <option value="paypal">PayPal</option>
                         </select>
                         <div class="error-message" id="paymentMethodError">Please select a payment method</div>
+                    </div>
+                    
+                    <!-- M-Pesa Instructions (shown when M-Pesa is selected) -->
+                    <div id="mpesaDonationInstructions" class="mpesa-instructions" style="display: none;">
+                        <div class="mpesa-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#00A94E" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="#00A94E"/>
+                                <path d="M17 9H14V7C14 5.9 13.1 5 12 5C10.9 5 10 5.9 10 7V9H7C5.9 9 5 9.9 5 11V17C5 18.1 5.9 19 7 19H17C18.1 19 19 18.1 19 17V11C19 9.9 18.1 9 17 9ZM12 16C10.9 16 10 15.1 10 14C10 12.9 10.9 12 12 12C13.1 12 14 12.9 14 14C14 15.1 13.1 16 12 16ZM15 9H9V7C9 6.45 9.45 6 10 6H14C14.55 6 15 6.45 15 7V9Z" fill="white"/>
+                            </svg>
+                            <span>M-Pesa Payment Details</span>
+                        </div>
+                        
+                        <div class="mpesa-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-box">
+                                    <span class="detail-label">PayBill Number</span>
+                                    <span class="detail-value">303030</span>
+                                    <button class="copy-btn" data-copy="303030">Copy</button>
+                                </div>
+                                <div class="detail-box">
+                                    <span class="detail-label">Account Number</span>
+                                    <span class="detail-value">CEGZ#LVBICE</span>
+                                    <button class="copy-btn" data-copy="CEGZ#LVBICE">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mpesa-steps">
+                            <h5>How to Pay:</h5>
+                            <ol>
+                                <li>Go to <strong>Lipa na M-Pesa</strong> on your phone</li>
+                                <li>Select <strong>Pay Bill</strong></li>
+                                <li>Enter Business No: <strong>303030</strong></li>
+                                <li>Enter Account No: <strong>CEGZ#LVBICE</strong></li>
+                                <li>Enter the donation amount</li>
+                                <li>Enter your M-Pesa PIN</li>
+                                <li>Confirm payment</li>
+                            </ol>
+                        </div>
                     </div>
                     
                     <div class="info-box">
@@ -63,12 +104,349 @@
                     </button>
                 </div>
                 
-                <!-- Clickable text for success notification -->
                 <div class="skip-donation">
                     <p>Skip donation for now?</p>
                     <a id="skipDonation" class="text-link">
                         Complete registration without donation
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Organization Tier Modal -->
+    <div id="organizationTierModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeTierModal" class="close-modal-btn">×</button>
+            
+            <div class="modal-body">
+                <h2 class="modal-title">Benefits and costs of membership</h2>
+                <p class="modal-subtitle">
+                    LVBICE does not set a mandatory fee, but we invite each member organisation to choose the level that suits their own capacity.
+                </p>
+                
+                <!-- Tiers Only -->
+                <div class="tiers-container">
+                    <!-- BRONZE TIER -->
+                    <div class="tier-card bronze-tier">
+                        <div class="tier-header">
+                            <h3 class="tier-title">BRONZE</h3>
+                            <div class="tier-price">Free</div>
+                            <div class="tier-subtitle">Basic Membership</div>
+                        </div>
+                        <div class="tier-benefits">
+                            <h4>Benefits:</h4>
+                            <ul>
+                                <li>Increased visibility</li>
+                                <li>Collaborations opportunities</li>
+                                <li>Networking</li>
+                            </ul>
+                        </div>
+                        <div class="tier-contribution">
+                            <h4>Financial Contribution:</h4>
+                            <p>Free</p>
+                        </div>
+                        <button class="primary-btn full-width select-tier-btn" data-tier="bronze" data-amount="0">
+                            SELECT BRONZE TIER
+                        </button>
+                    </div>
+                    
+                    <!-- SILVER TIER -->
+                    <div class="tier-card silver-tier">
+                        <div class="tier-header">
+                            <h3 class="tier-title">SILVER</h3>
+                            <div class="tier-price">From USD 100</div>
+                            <div class="tier-subtitle">Enhanced Membership</div>
+                        </div>
+                        <div class="tier-benefits">
+                            <h4>Benefits:</h4>
+                            <ul>
+                                <li>Preferred postings of items</li>
+                                <li>Preferred visibility and access to exclusive events and resources</li>
+                            </ul>
+                        </div>
+                        <div class="silver-options">
+                            <h4>Select Amount (USD):</h4>
+                            <div class="silver-option-buttons">
+                                <button class="secondary-btn silver-option-btn" data-amount="100" data-label="USD 100">USD 100</button>
+                                <button class="secondary-btn silver-option-btn" data-amount="250" data-label="USD 250">USD 250</button>
+                                <button class="secondary-btn silver-option-btn" data-amount="400" data-label="USD 400">USD 400</button>
+                                <button class="secondary-btn silver-option-btn" data-amount="800" data-label="USD 800">USD 800</button>
+                            </div>
+                        </div>
+                        <button class="primary-btn full-width select-tier-btn" data-tier="silver" data-amount="100" style="display: none;" id="selectSilverBtn">
+                            SELECT SILVER TIER - USD 100
+                        </button>
+                    </div>
+                    
+                    <!-- GOLD TIER -->
+                    <div class="tier-card gold-tier">
+                        <div class="tier-header">
+                            <div class="popular-badge">MOST POPULAR</div>
+                            <h3 class="tier-title">GOLD</h3>
+                            <div class="tier-price">USD 1,000</div>
+                            <div class="tier-subtitle">Premium Membership</div>
+                        </div>
+                        <div class="tier-benefits">
+                            <h4>Benefits:</h4>
+                            <ul>
+                                <li>All Silver benefits plus:</li>
+                                <li>Online technology briefings</li>
+                                <li>High mobility for brand enhancement</li>
+                                <li>Priority support</li>
+                            </ul>
+                        </div>
+                        <div class="tier-description">
+                            <p><strong>Designed for:</strong> Organizations who believe in LVBICE objectives and intend to tap into the pool of expertise to meet strategic goals.</p>
+                            <p>As a Gold member your support strengthens functions of LVBICE to share network, knowledge and services.</p>
+                        </div>
+                        <button class="primary-btn full-width select-tier-btn" data-tier="gold" data-amount="1000">
+                            SELECT GOLD TIER - USD 1,000
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Membership Criteria:</h4>
+                    <ul>
+                        <li>Appoint member to LVBICE as liaison</li>
+                        <li>Support the objectives of LVBICE and the commitments in the last conference</li>
+                        <li>Legal entity for the last 5 years, with more than 5 working staff</li>
+                        <li>If you don't meet these criteria, consider joining as an individual member</li>
+                    </ul>
+                </div>
+                
+                <div class="back-button-container">
+                    <button id="backToOrgFormFromTier" class="secondary-btn full-width back-btn">
+                        ← Back to Organization Form
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual Donation/Payment Modal -->
+    <div id="individualPaymentModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeIndividualPaymentModal" class="close-modal-btn">×</button>
+            
+            <div class="modal-body">
+                <h2 class="modal-title">Support LVBICE</h2>
+                <p class="modal-subtitle">
+                    Thank you for registering! Would you like to make a donation to support our work?
+                </p>
+                
+                <div class="form-container">
+                    <!-- Donation Amount -->
+                    <div class="form-group">
+                        <label class="form-label">Donation Amount (KSH)</label>
+                        <input type="number" id="individualDonationAmountModal" class="form-input" min="100" placeholder="Enter amount in KSH" value="1000">
+                    </div>
+                    
+                    <!-- M-Pesa Payment Instructions -->
+                    <div class="mpesa-instructions">
+                        <div class="mpesa-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#00A94E">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="#00A94E"/>
+                                <path d="M17 9H14V7C14 5.9 13.1 5 12 5C10.9 5 10 5.9 10 7V9H7C5.9 9 5 9.9 5 11V17C5 18.1 5.9 19 7 19H17C18.1 19 19 18.1 19 17V11C19 9.9 18.1 9 17 9ZM12 16C10.9 16 10 15.1 10 14C10 12.9 10.9 12 12 12C13.1 12 14 12.9 14 14C14 15.1 13.1 16 12 16ZM15 9H9V7C9 6.45 9.45 6 10 6H14C14.55 6 15 6.45 15 7V9Z" fill="white"/>
+                            </svg>
+                            <span>M-Pesa Payment Instructions</span>
+                        </div>
+                        
+                        <div class="mpesa-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-box">
+                                    <span class="detail-label">PayBill Number</span>
+                                    <span class="detail-value">303030</span>
+                                    <button class="copy-btn" data-copy="303030">Copy</button>
+                                </div>
+                                <div class="detail-box">
+                                    <span class="detail-label">Account Number</span>
+                                    <span class="detail-value">CEGZ#LVBICE</span>
+                                    <button class="copy-btn" data-copy="CEGZ#LVBICE">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mpesa-steps">
+                            <h5>How to Pay:</h5>
+                            <ol>
+                                <li>Go to <strong>Lipa na M-Pesa</strong> on your phone</li>
+                                <li>Select <strong>Pay Bill</strong></li>
+                                <li>Enter Business No: <strong>303030</strong></li>
+                                <li>Enter Account No: <strong>CEGZ#LVBICE</strong></li>
+                                <li>Enter the donation amount</li>
+                                <li>Enter your M-Pesa PIN</li>
+                                <li>Confirm payment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p>All contributions go through <strong>CHACODEV</strong> (PBO registered in Kenya)</p>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <button id="submitIndividualDonation" class="primary-btn full-width">
+                        DONATE NOW
+                    </button>
+                    
+                    <div class="skip-donation">
+                        <p>Don't want to donate?</p>
+                        <button id="skipIndividualDonation" class="secondary-btn full-width">
+                            COMPLETE REGISTRATION WITHOUT DONATION
+                        </button>
+                    </div>
+                    
+                    <div class="register-later">
+                        <p>Want to register later?</p>
+                        <a id="registerLater" class="text-link">
+                            I'll register later
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Success Modal -->
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeSuccessModal" class="close-modal-btn">×</button>
+            
+            <div class="modal-body">
+                <div class="success-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" 
+                              stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <h2 class="modal-title">Registration Successful!</h2>
+                <p class="modal-subtitle" id="successMessage">
+                    <!-- Will be filled dynamically -->
+                </p>
+                
+                <div class="success-details">
+                    <p>Thank you for joining LVBICE Network.</p>
+                    <p>You'll receive a confirmation email shortly.</p>
+                </div>
+                
+                <div class="success-actions">
+                    <button id="closeSuccessBtn" class="primary-btn full-width">
+                        BACK TO WEBSITE
+                    </button>
+                    
+                    <div class="success-links">
+                        <a href="#" class="text-link">Visit Member Portal</a>
+                        <a href="#" class="text-link">Learn More About LVBICE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closePaymentModal" class="close-modal-btn">×</button>
+            
+            <div class="modal-body">
+                <h2 class="modal-title">Complete Your Membership Payment</h2>
+                <p class="modal-subtitle" id="paymentSubtitle">
+                    <!-- Will be filled dynamically -->
+                </p>
+                
+                <div class="form-container">
+                    <h4 class="form-section-title">Payment Details</h4>
+                    
+                    <div class="payment-summary">
+                        <div class="payment-summary-item">
+                            <span class="summary-label">Selected Tier:</span>
+                            <span class="summary-value" id="selectedTierDisplay">-</span>
+                        </div>
+                        <div class="payment-summary-item">
+                            <span class="summary-label">Amount (USD):</span>
+                            <span class="summary-value" id="paymentAmountDisplay">-</span>
+                        </div>
+                        <div class="payment-summary-item">
+                            <span class="summary-label">Amount (KSH):</span>
+                            <span class="summary-value" id="paymentAmountKES">-</span>
+                        </div>
+                    </div>
+                    
+                    <!-- M-Pesa Payment Details -->
+                    <div class="mpesa-instructions">
+                        <div class="mpesa-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#00A94E">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="#00A94E"/>
+                                <path d="M17 9H14V7C14 5.9 13.1 5 12 5C10.9 5 10 5.9 10 7V9H7C5.9 9 5 9.9 5 11V17C5 18.1 5.9 19 7 19H17C18.1 19 19 18.1 19 17V11C19 9.9 18.1 9 17 9ZM12 16C10.9 16 10 15.1 10 14C10 12.9 10.9 12 12 12C13.1 12 14 12.9 14 14C14 15.1 13.1 16 12 16ZM15 9H9V7C9 6.45 9.45 6 10 6H14C14.55 6 15 6.45 15 7V9Z" fill="white"/>
+                            </svg>
+                            <span>M-Pesa Payment Instructions</span>
+                        </div>
+                        
+                        <div class="mpesa-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-box">
+                                    <span class="detail-label">PayBill Number</span>
+                                    <span class="detail-value">303030</span>
+                                    <button class="copy-btn" data-copy="303030">Copy</button>
+                                </div>
+                                <div class="detail-box">
+                                    <span class="detail-label">Account Number</span>
+                                    <span class="detail-value">CEGZ#LVBICE</span>
+                                    <button class="copy-btn" data-copy="CEGZ#LVBICE">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mpesa-steps">
+                            <h5>How to Pay via M-Pesa:</h5>
+                            <ol>
+                                <li>Go to <strong>Lipa na M-Pesa</strong> on your phone</li>
+                                <li>Select <strong>Pay Bill</strong> option</li>
+                                <li>Enter Business Number: <strong>303030</strong></li>
+                                <li>Enter Account Number: <strong>CEGZ#LVBICE</strong></li>
+                                <li>Enter the <strong>KSH amount</strong> shown above</li>
+                                <li>Enter your M-Pesa PIN</li>
+                                <li>Confirm payment</li>
+                                <li>You'll receive a confirmation SMS</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="important-notes">
+                            <h5>Important Notes:</h5>
+                            <ul>
+                                <li>Make sure to enter <strong>CEGZ#LVBICE</strong> exactly as shown</li>
+                                <li>Include the hash (#) symbol in the account number</li>
+                                <li>Save the transaction message for your records</li>
+                                <li>For assistance, email: support@lvbice.com</li>
+                                <li><strong>Pay the KSH amount shown above</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p>All payments go through <strong>CHACODEV</strong> (PBO registered in Kenya)</p>
+                        <p><strong>Exchange Rate:</strong> 1 USD = 130 KSH</p>
+                    </div>
+                    
+                    <button id="submitPayment" class="primary-btn full-width">
+                        COMPLETE PAYMENT
+                    </button>
+                    
+                    <div class="payment-confirmation">
+                        <p>Already made the payment?</p>
+                        <button id="confirmPayment" class="secondary-btn full-width">
+                            CONFIRM PAYMENT COMPLETION
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="back-button-container">
+                    <button id="backToTierSelection" class="secondary-btn full-width back-btn">
+                        ← Back to Tier Selection
+                    </button>
                 </div>
             </div>
         </div>
@@ -106,7 +484,6 @@
                     <h2 class="modal-title">Individual Membership</h2>
                     
                     <form id="registrationForm">
-                        <!-- Personal Information - LEFT ALIGNED -->
                         <div class="left-aligned-form">
                             <div class="form-group">
                                 <label class="form-label">
@@ -130,7 +507,6 @@
                                 <div class="error-message" id="emailError">Please enter a valid email address</div>
                             </div>
                             
-                            <!-- COUNTRY BEFORE PHONE NUMBER -->
                             <div class="form-group">
                                 <label class="form-label">
                                     Country <span class="required-star">*</span>
@@ -167,7 +543,6 @@
                             </div>
                         </div>
                         
-                        <!-- Terms Checkbox -->
                         <div class="checkbox-container" id="termsContainer">
                             <input type="checkbox" id="terms" required>
                             <label for="terms" class="checkbox-label">
@@ -176,13 +551,12 @@
                         </div>
                         <div class="error-message" id="termsError">You must agree to the Terms and Conditions</div>
                         
-                        <!-- Submit Button -->
-                        <button type="submit" class="primary-btn full-width">
-                            COMPLETE REGISTRATION
+                        <!-- Changed from submit to button with type="button" -->
+                        <button type="button" id="submitIndividualForm" class="primary-btn full-width">
+                            CONTINUE TO DONATION
                         </button>
                     </form>
                     
-                    <!-- Back Button -->
                     <button id="backToSelection" class="secondary-btn full-width back-btn">
                         ← Back to Selection
                     </button>
@@ -209,7 +583,6 @@
                         </button>
                     </div>
                     
-                    <!-- Back Button -->
                     <button id="backToSelectionFromType" class="secondary-btn full-width back-btn">
                         ← Back to Selection
                     </button>
@@ -225,7 +598,6 @@
                     </p>
                     
                     <form id="organizationRegistrationForm">
-                        <!-- Organization Information -->
                         <div class="left-aligned-form">
                             <div class="form-group">
                                 <label class="form-label">
@@ -265,7 +637,6 @@
                                 <div class="error-message" id="orgCategoryError">Please select organization category</div>
                             </div>
                             
-                            <!-- Other Organization Name (appears only when "Other" is selected) -->
                             <div class="form-group" id="otherOrgNameGroup" style="display: none;">
                                 <label class="form-label">
                                     Specify Organization Type <span class="required-star">*</span>
@@ -276,7 +647,6 @@
                             </div>
                         </div>
                         
-                        <!-- Contact Person Details -->
                         <div class="form-section-divider">
                             <h4 class="form-section-title">Contact Person Details</h4>
                         </div>
@@ -314,7 +684,6 @@
                                 <div class="error-message" id="contactEmailError">Please enter a valid email address</div>
                             </div>
                             
-                            <!-- COUNTRY BEFORE PHONE NUMBER -->
                             <div class="form-group">
                                 <label class="form-label">
                                     Country <span class="required-star">*</span>
@@ -355,7 +724,6 @@
                             </div>
                         </div>
                         
-                        <!-- Terms Checkbox -->
                         <div class="checkbox-container" id="orgTermsContainer">
                             <input type="checkbox" id="orgTerms" required>
                             <label for="orgTerms" class="checkbox-label">
@@ -364,18 +732,15 @@
                         </div>
                         <div class="error-message" id="orgTermsError">You must agree to the terms</div>
                         
-                        <!-- Submit Button -->
                         <button type="submit" class="primary-btn full-width">
-                            SUBMIT ORGANIZATION APPLICATION
+                            CONTINUE TO MEMBERSHIP TIER
                         </button>
                     </form>
                     
-                    <!-- Back Button -->
                     <button id="backToTypeSelection" class="secondary-btn full-width back-btn">
                         ← Back to Organization Type
                     </button>
                     
-                    <!-- Help Text -->
                     <div class="help-box">
                         <p>Need assistance? Contact: <strong>customerservice@lvbice.com</strong></p>
                     </div>
@@ -384,18 +749,17 @@
         </div>
     </div>
 
-    <!-- Your existing website content goes here -->
+    <!-- Your existing website content -->
     <div class="website-content">
         <h1>The Existing Website</h1>
         <p>Existing website contents</p>
         
-        <!-- THE BECOME A MEMBER BUTTON -->
         <button id="becomeMemberBtn" class="primary-btn">
             Become a Member
         </button>
     </div>
 
-    <!-- Load JavaScript file -->
+    <!-- Single JavaScript file loading -->
     <script src="script.js"></script>
 </body>
 </html>
